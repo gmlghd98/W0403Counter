@@ -1,16 +1,20 @@
 package kr.ac.kumoh.s20170523.w0403counter
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import kr.ac.kumoh.s20170523.w0403counter.ui.theme.W0403CounterTheme
 
 class MainActivity : ComponentActivity() {
@@ -18,7 +22,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyApp {
-                Counter()
+                Column() {
+                    Counter()
+                    Counter()
+                    Counter()
+                }
             }
         }
     }
@@ -39,9 +47,40 @@ fun MyApp(content: @Composable () -> Unit ) {
 
 @Composable
 fun Counter() {
-    Text(text = "0")
-    Button(onClick = {}) {
-        Text(text = "증가")
+    var count by remember {
+        mutableStateOf(0)
+    }
+
+    Column(modifier = Modifier
+        //.fillMaxSize()
+        .padding(8.dp),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+
+    ) {
+        Text(text = count.toString(),
+            fontSize = 70.sp
+        )
+        Row() {
+            Button(modifier = Modifier.weight(1f),
+                onClick = {
+                    count++
+                    Log.i("Counter", count.toString())
+                }
+            ) {
+                Text(text = "증가")
+            }
+            Spacer(modifier = Modifier.width(8.dp))
+            Button(modifier = Modifier.weight(1f),
+                onClick = {
+                    if (count > 0)
+                        count--
+                    Log.i("Counter", count.toString())
+                }
+            ) {
+                Text(text = "감소")
+            }
+        }
     }
 }
 
